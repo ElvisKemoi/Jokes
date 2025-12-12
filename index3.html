@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Famous Quotes Scroll</title>
+    <title>Funny Jokes Scroll</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       html,
@@ -12,13 +12,12 @@
         padding: 0;
         height: 100%;
         overflow: hidden;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          "Helvetica Neue", Arial, sans-serif;
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       }
 
       /* Scroll container */
-      #quotes-container {
+      #jokes-container {
         height: calc(100vh - 80px);
         overflow-y: scroll;
         scroll-snap-type: y mandatory;
@@ -26,12 +25,12 @@
         padding: 24px 16px;
         scrollbar-width: none;
       }
-      #quotes-container::-webkit-scrollbar {
+      #jokes-container::-webkit-scrollbar {
         display: none;
       }
 
-      /* Full screen quote card */
-      .quote-card {
+      /* Full screen joke card */
+      .joke-card {
         height: calc(100vh - 80px - 48px);
         scroll-snap-align: start;
         display: flex;
@@ -40,7 +39,7 @@
         align-items: center;
         padding: 3rem;
         margin: 0 auto 24px;
-        max-width: 700px;
+        max-width: 600px;
         box-sizing: border-box;
         border-radius: 24px;
         background: rgba(255, 255, 255, 0.95);
@@ -48,43 +47,27 @@
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         color: #1a202c;
         text-align: center;
+        font-weight: 600;
+        font-size: 2rem;
+        line-height: 1.4;
         opacity: 0;
         transform: translateY(50px);
         transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         border: 2px solid rgba(255, 255, 255, 0.8);
       }
-      .quote-card.show {
+      .joke-card.show {
         opacity: 1;
         transform: translateY(0);
       }
-      .quote-text {
-        font-size: 1.8rem;
-        font-weight: 600;
-        line-height: 1.5;
+      .setup {
         color: #2d3748;
-        margin-bottom: 2rem;
-        font-style: italic;
       }
-      .quote-text::before {
-        content: '"';
-        font-size: 3rem;
-        color: #f093fb;
-        opacity: 0.5;
-      }
-      .quote-text::after {
-        content: '"';
-        font-size: 3rem;
-        color: #f5576c;
-        opacity: 0.5;
-      }
-      .quote-author {
-        font-size: 1.3rem;
+      .delivery {
+        font-size: 1.6rem;
+        margin-top: 2rem;
+        color: #667eea;
         font-weight: 700;
-        color: #f5576c;
         animation: fadeInUp 0.8s ease 0.3s both;
-      }
-      .quote-author::before {
-        content: "— ";
       }
       @keyframes fadeInUp {
         from {
@@ -184,8 +167,31 @@
       input:focus,
       select:focus {
         outline: none;
-        border-color: #f093fb;
-        box-shadow: 0 0 0 3px rgba(240, 147, 251, 0.1);
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+      .flag-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+      }
+      .flag-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 8px;
+        transition: background 0.2s;
+      }
+      .flag-label:hover {
+        background: #f7fafc;
+      }
+      .flag-label input[type="checkbox"] {
+        width: auto;
+        margin: 0;
+        cursor: pointer;
       }
 
       #loading {
@@ -195,114 +201,68 @@
         font-size: 0.95rem;
         font-weight: 500;
       }
-
-      /* Category chips */
-      .category-chips {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-bottom: 1.5rem;
-      }
-      .chip {
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
-        border: 2px solid #e2e8f0;
-        background: white;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-size: 0.85rem;
-        font-weight: 600;
-      }
-      .chip:hover {
-        border-color: #f093fb;
-        background: #fef5ff;
-      }
-      .chip.active {
-        background: linear-gradient(135deg, #f093fb, #f5576c);
-        color: white;
-        border-color: transparent;
-      }
     </style>
   </head>
   <body>
     <!-- Header -->
     <header>
-      <div class="header-title">💭 Dx. F Quotes</div>
+      <div class="header-title">😂 Jokes</div>
       <button class="btn" id="settings-btn">⚙️ Settings</button>
     </header>
 
-    <!-- Quote container -->
-    <div id="quotes-container"></div>
-    <div id="loading">Loading more quotes...</div>
+    <!-- Joke container -->
+    <div id="jokes-container"></div>
+    <div id="loading">Loading more jokes...</div>
 
     <!-- Settings Offcanvas -->
     <div id="settings-panel">
       <h2>⚙️ Settings</h2>
+      <label for="category">Category</label>
+      <select id="category">
+        <option value="Any">Any</option>
+        <option value="Programming">Programming</option>
+        <option value="Misc">Misc</option>
+        <option value="Pun">Pun</option>
+        <option value="Spooky">Spooky</option>
+        <option value="Christmas">Christmas</option>
+      </select>
 
-      <label>Quote Categories</label>
-      <div class="category-chips" id="category-chips">
-        <div class="chip active" data-tag="">All Quotes</div>
-        <div class="chip" data-tag="wisdom">Wisdom</div>
-        <div class="chip" data-tag="inspirational">Inspirational</div>
-        <div class="chip" data-tag="life">Life</div>
-        <div class="chip" data-tag="happiness">Happiness</div>
-        <div class="chip" data-tag="success">Success</div>
-        <div class="chip" data-tag="love">Love</div>
-        <div class="chip" data-tag="friendship">Friendship</div>
+      <label for="type">Type</label>
+      <select id="type">
+        <option value="twopart">Two Part</option>
+        <option value="single">Single</option>
+      </select>
+
+      <label>Blacklist Flags</label>
+      <div class="flag-container">
+        <label class="flag-label"><input type="checkbox" value="nsfw" class="flag" /> NSFW</label>
+        <label class="flag-label"><input type="checkbox" value="religious" class="flag" /> Religious</label>
+        <label class="flag-label"><input type="checkbox" value="political" class="flag" /> Political</label>
+        <label class="flag-label"><input type="checkbox" value="racist" class="flag" /> Racist</label>
+        <label class="flag-label"><input type="checkbox" value="sexist" class="flag" /> Sexist</label>
+        <label class="flag-label"><input type="checkbox" value="explicit" class="flag" /> Explicit</label>
       </div>
 
-      <label for="minLength">Minimum Quote Length</label>
-      <input
-        type="number"
-        id="minLength"
-        min="0"
-        max="500"
-        value="0"
-        placeholder="0 (no minimum)"
-      />
-
-      <label for="maxLength">Maximum Quote Length</label>
-      <input
-        type="number"
-        id="maxLength"
-        min="0"
-        max="500"
-        value="300"
-        placeholder="300 (or leave empty)"
-      />
-
-      <label for="amount">Quotes per load</label>
+      <label for="amount">Jokes per load</label>
       <input type="number" id="amount" min="1" max="10" value="3" />
 
-      <button
-        class="btn w-full mt-4"
-        id="apply-settings"
-        style="
-          background: linear-gradient(135deg, #f093fb, #f5576c);
-          border: none;
-          padding: 1rem;
-          font-size: 1rem;
-        "
-      >
-        Apply Settings
-      </button>
+      <button class="btn w-full mt-4" id="apply-settings" style="background: linear-gradient(135deg, #667eea, #764ba2); border: none; padding: 1rem; font-size: 1rem;">Apply Settings</button>
     </div>
 
     <script>
-      const container = document.getElementById("quotes-container");
+      const container = document.getElementById("jokes-container");
       const loading = document.getElementById("loading");
       const settingsPanel = document.getElementById("settings-panel");
       const settingsBtn = document.getElementById("settings-btn");
       const applyBtn = document.getElementById("apply-settings");
-      const categoryChips = document.getElementById("category-chips");
 
       let pageLoading = false;
 
       // Settings defaults
       let settings = {
-        tags: "",
-        minLength: 0,
-        maxLength: 300,
+        category: "Any",
+        type: "twopart",
+        blacklistFlags: [],
         amount: 3,
       };
 
@@ -311,82 +271,59 @@
         settingsPanel.classList.toggle("show");
       });
 
-      // Category chip selection
-      categoryChips.addEventListener("click", (e) => {
-        if (e.target.classList.contains("chip")) {
-          // Remove active from all chips
-          document
-            .querySelectorAll(".chip")
-            .forEach((chip) => chip.classList.remove("active"));
-          // Add active to clicked chip
-          e.target.classList.add("active");
-        }
-      });
-
       // Apply settings
       applyBtn.addEventListener("click", () => {
-        const activeChip = document.querySelector(".chip.active");
-        settings.tags = activeChip ? activeChip.dataset.tag : "";
-        settings.minLength =
-          parseInt(document.getElementById("minLength").value) || 0;
-        settings.maxLength =
-          parseInt(document.getElementById("maxLength").value) || 300;
+        settings.category = document.getElementById("category").value;
+        settings.type = document.getElementById("type").value;
         settings.amount =
           parseInt(document.getElementById("amount").value) || 3;
+        settings.blacklistFlags = Array.from(
+          document.querySelectorAll(".flag:checked")
+        ).map((f) => f.value);
 
-        // Clear current quotes and reload
+        // Clear current jokes and reload
         container.innerHTML = "";
-        loadQuotes(settings.amount);
+        loadJokes(settings.amount);
         settingsPanel.classList.remove("show");
       });
 
-      // Fetch quote from API
-      async function fetchQuote() {
+      // Fetch joke from API
+      async function fetchJoke() {
         try {
-          let url = `https://api.quotable.io/random`;
-          const params = [];
-
-          if (settings.tags) params.push(`tags=${settings.tags}`);
-          if (settings.minLength)
-            params.push(`minLength=${settings.minLength}`);
-          if (settings.maxLength)
-            params.push(`maxLength=${settings.maxLength}`);
-
-          if (params.length > 0) {
-            url += `?${params.join("&")}`;
-          }
-
-          const res = await fetch(url);
+          const blacklist = settings.blacklistFlags.length
+            ? `&blacklistFlags=${settings.blacklistFlags.join(",")}`
+            : "";
+          const res = await fetch(
+            `https://v2.jokeapi.dev/joke/${settings.category}?type=${settings.type}${blacklist}&safe-mode`
+          );
           const data = await res.json();
-
-          if (data && data.content && data.author) {
-            return data;
-          }
+          if (!data.error) return data;
         } catch (e) {
-          console.error("Error fetching quote:", e);
+          console.error("Error fetching joke:", e);
         }
         return null;
       }
 
-      // Create full-screen quote card
-      function createQuoteCard(quote) {
+      // Create full-screen joke card
+      function createJokeCard(joke) {
         const card = document.createElement("div");
-        card.className = "quote-card";
-        card.innerHTML = `
-          <div class="quote-text">${quote.content}</div>
-          <div class="quote-author">${quote.author}</div>
-        `;
+        card.className = "joke-card";
+        if (joke.type === "twopart") {
+          card.innerHTML = `<div class="setup">${joke.setup}</div><div class="delivery">${joke.delivery}</div>`;
+        } else {
+          card.innerHTML = `<div class="setup">${joke.joke}</div>`;
+        }
         container.appendChild(card);
         setTimeout(() => card.classList.add("show"), 50);
       }
 
-      // Load multiple quotes
-      async function loadQuotes(count = 3) {
+      // Load multiple jokes
+      async function loadJokes(count = 3) {
         if (pageLoading) return;
         pageLoading = true;
         for (let i = 0; i < count; i++) {
-          const quote = await fetchQuote();
-          if (quote) createQuoteCard(quote);
+          const joke = await fetchJoke();
+          if (joke) createJokeCard(joke);
         }
         pageLoading = false;
       }
@@ -396,7 +333,7 @@
       container.addEventListener("scroll", () => {
         window.clearTimeout(isScrolling);
         isScrolling = setTimeout(() => {
-          const cards = document.querySelectorAll(".quote-card");
+          const cards = document.querySelectorAll(".joke-card");
           let closest = cards[0];
           let minDistance = Infinity;
           cards.forEach((card) => {
@@ -406,22 +343,20 @@
               closest = card;
             }
           });
-          if (closest) {
-            closest.scrollIntoView({ behavior: "smooth" });
-          }
+          closest.scrollIntoView({ behavior: "smooth" });
 
-          // Load more quotes if near end
+          // Load more jokes if near end
           if (
             container.scrollTop + window.innerHeight >=
             container.scrollHeight - 200
           ) {
-            loadQuotes(settings.amount);
+            loadJokes(settings.amount);
           }
         }, 50);
       });
 
       // Initial load
-      loadQuotes(settings.amount);
+      loadJokes(settings.amount);
     </script>
   </body>
 </html>

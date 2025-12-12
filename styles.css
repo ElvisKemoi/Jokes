@@ -1,33 +1,112 @@
-.navbar-brand,
-#startButton,
-.nav-item,
-.card-header {
-	font-family: "Fredoka", sans-serif;
+/*
+ * 1. Body and HTML setup for full-screen and scroll-snapping
+ */
+html,
+body {
+    /* Set height to 100% of viewport to enable full-screen sections */
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Fredoka', sans-serif;
+    /* Prevent the main body from showing a scrollbar, the 'main' element handles it */
+    overflow: hidden; 
 }
 
-.nav-item {
-	font-size: larger;
-}
-.navbar-nav {
-	transition: 2s ease-in-out;
-}
-#navbarSupportedContent {
-	transition: 0.2s ease;
-}
-
-#startButton {
-	animation: pulse infinite 1s;
-	transition: ease-in-out;
+/* The scrollable feed container */
+#jokeFeedContainer {
+    /* Set the scroll-snapping behavior for the container */
+    scroll-snap-type: y mandatory;
+    /* Hide the default scrollbar */
+    overflow-y: scroll;
+    /* Make the container take up the entire viewport below the navbar */
+    width: 100vw;
+    height: calc(100vh - 58px); /* Adjust height to account for the navbar */
 }
 
-@keyframes pulse {
-	0% {
-		box-shadow: 0 0 10px yellow;
-	}
-	50% {
-		box-shadow: 0 0 30px yellow;
-	}
-	100% {
-		box-shadow: 0 0 50px transparent;
-	}
+/*
+ * 2. Joke Card Styling for TikTok effect
+ */
+
+/* The outer container for each joke */
+.joke-scroll-container {
+    min-height: calc(100vh - 58px); /* Ensure each card is the full scrollable height */
+    scroll-snap-align: start; /* Force the scroll to snap to the top of this element */
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    background-color: #000;
+    color: #fff; 
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.joke-card {
+    width: 90%; 
+    max-width: 600px; 
+    background: rgba(255, 255, 255, 0.1); 
+    border: none;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.joke-card .card-header,
+.joke-card .card-footer {
+    background: transparent;
+    border: none;
+    color: #fff;
+}
+
+.joke-card .card-body {
+    min-height: 25vh; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
+}
+
+.joke-card .card-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffc107; 
+    text-align: center;
+}
+
+.joke-card .card-text {
+    font-size: 1.5rem;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.initial-loading {
+    /* Ensure the loading message is also centered on the full screen */
+    min-height: calc(100vh - 58px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* styles.css */
+
+#jokeFeedContainer {
+    /* Make this container the sole scrollable area */
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    /* Must be a precise height to enable vertical scrolling */
+    height: calc(100vh - 58px); 
+}
+
+.joke-scroll-container {
+    /* Each joke must be the full height of the scrollable container */
+    min-height: calc(100vh - 58px); 
+    scroll-snap-align: start; 
+    /* ... other styles ... */
 }
